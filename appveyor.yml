@@ -27,7 +27,6 @@ deploy:
     name: NuGet Channel
     on:
       branch: master
-    server: https://api.nuget.org/v3/index.json
     api_key:
       secure: 8dZVSJGj14GW04Rwa+Qk9UwYkBeeApG5PA32GBBDI3iS5TXUZ8i4ZugU61gCLh+Z
     skip_symbols: true
