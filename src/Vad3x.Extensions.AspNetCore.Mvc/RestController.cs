@@ -1,46 +1,53 @@
-using System.Net;
+using Microsoft.AspNetCore.Http;
 
 namespace Microsoft.AspNetCore.Mvc
 {
     public abstract class RestController : Controller
     {
         [NonAction]
-        public IActionResult Conflict(string message = null, string errorCode = null)
+        public IActionResult Conflict(string type, string title = null)
         {
-            return GeneralResponse(HttpStatusCode.Conflict, message, errorCode);
+            return GeneralResponse(StatusCodes.Status409Conflict, type, title);
         }
 
         [NonAction]
-        public IActionResult Gone(string message, string errorCode = null)
+        public IActionResult Gone(string type, string title = null)
         {
-            return GeneralResponse(HttpStatusCode.Gone, message, errorCode);
+            return GeneralResponse(StatusCodes.Status410Gone, type, title);
         }
 
         [NonAction]
-        public IActionResult NotFound(string message, string errorCode = null)
+        public IActionResult NotFound(string type, string title = null)
         {
-            return GeneralResponse(HttpStatusCode.NotFound, message, errorCode);
+            return GeneralResponse(StatusCodes.Status404NotFound, type, title);
         }
 
         [NonAction]
-        public IActionResult Unauthorized(string message, string errorCode = null)
+        public IActionResult Unauthorized(string type, string title = null)
         {
-            return GeneralResponse(HttpStatusCode.Unauthorized, message, errorCode);
+            return GeneralResponse(StatusCodes.Status401Unauthorized, type, title);
         }
 
         [NonAction]
-        public IActionResult Forbid(string message, string errorCode = null)
+        public IActionResult Forbid(string type, string title = null)
         {
-            return GeneralResponse(HttpStatusCode.Forbidden, message, errorCode);
+            return GeneralResponse(StatusCodes.Status403Forbidden, type, title);
         }
 
-        private IActionResult GeneralResponse(HttpStatusCode statusCode, string message = null, string errorCode = null)
+        private IActionResult GeneralResponse(int statusCode, string type, string title)
         {
-            return StatusCode((int)statusCode, new GeneralData
+            var problemDetails = new ProblemDetails
             {
-                Message = message,
-                ErrorCode = errorCode
-            });
+                Status = statusCode,
+                Title = title,
+                Type = type,
+                Instance = HttpContext.Request.Path
+            };
+
+            return new ObjectResult(problemDetails)
+            {
+                StatusCode = statusCode
+            };
         }
     }
 }
