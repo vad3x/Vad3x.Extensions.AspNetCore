@@ -7,47 +7,31 @@ namespace Microsoft.AspNetCore.Mvc
         [NonAction]
         public ActionResult Conflict(string type, string title = null)
         {
-            return GeneralResponse(StatusCodes.Status409Conflict, type, title);
+            return new ConflictRestObjectResult(type, title, HttpContext.Request.Path);
         }
 
         [NonAction]
         public ActionResult Gone(string type, string title = null)
         {
-            return GeneralResponse(StatusCodes.Status410Gone, type, title);
+            return new GoneRestObjectResult(type, title, HttpContext.Request.Path);
         }
 
         [NonAction]
         public ActionResult NotFound(string type, string title = null)
         {
-            return GeneralResponse(StatusCodes.Status404NotFound, type, title);
+            return new NotFoundRestObjectResult(type, title, HttpContext.Request.Path);
         }
 
         [NonAction]
         public ActionResult Unauthorized(string type, string title = null)
         {
-            return GeneralResponse(StatusCodes.Status401Unauthorized, type, title);
+            return new UnauthorizedRestObjectResult(type, title, HttpContext.Request.Path);
         }
 
         [NonAction]
         public ActionResult Forbid(string type, string title = null)
         {
-            return GeneralResponse(StatusCodes.Status403Forbidden, type, title);
-        }
-
-        private ActionResult GeneralResponse(int statusCode, string type, string title)
-        {
-            var problemDetails = new ProblemDetails
-            {
-                Status = statusCode,
-                Title = title,
-                Type = type,
-                Instance = HttpContext.Request.Path
-            };
-
-            return new ObjectResult(problemDetails)
-            {
-                StatusCode = statusCode
-            };
+            return new ForbiddenRestObjectResult(type, title, HttpContext.Request.Path);
         }
     }
 }
