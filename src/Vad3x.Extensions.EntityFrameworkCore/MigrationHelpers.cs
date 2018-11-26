@@ -63,6 +63,29 @@ namespace Vad3x.Extensions.EntityFrameworkCore
             }
         }
 
+        public static string[] AppliedMigrations(IWebHost webHost, Type dbContextType)
+        {
+            using (var scope = webHost.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+
+                var dbContext = services.GetService(dbContextType) as DbContext;
+                var historyRepository = dbContext.GetService<IHistoryRepository>();
+
+                IEnumerable<string> applied;
+                if (historyRepository.Exists())
+                {
+                    applied = historyRepository.GetAppliedMigrations().Select(r => r.MigrationId);
+                }
+                else
+                {
+                    applied = new[] { "0" };
+                }
+
+                return applied.ToArray();
+            }
+        }
+
         public static void Migrate(IWebHost webHost, Type dbContextType)
         {
             using (var scope = webHost.Services.CreateScope())

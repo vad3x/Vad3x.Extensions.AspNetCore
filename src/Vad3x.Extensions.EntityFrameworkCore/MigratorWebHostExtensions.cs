@@ -9,13 +9,27 @@ namespace Vad3x.Extensions.EntityFrameworkCore
     {
         public static string Migrator(this IWebHost webHost, string[] args)
         {
+            if (args.Contains("--applied-migrations"))
+            {
+                var dbContextName = args.First(x => !x.StartsWith("--"));
+
+                var applied = MigrationHelpers.AppliedMigrations(webHost, MigrationHelpers.GetDbContextType(dbContextName));
+
+                if (args.Contains("--last"))
+                {
+                    applied = new[] { applied.Last() };
+                }
+
+                return string.Join(" ", applied);
+            }
+
             if (args.Contains("--pending-migrations"))
             {
                 var dbContextName = args.First(x => !x.StartsWith("--"));
 
                 var pending = MigrationHelpers.PendingMigrations(webHost, MigrationHelpers.GetDbContextType(dbContextName));
 
-                if (pending.Any())
+                if (pending.Length > 0)
                 {
                     if (args.Contains("--first-last"))
                     {
