@@ -53,6 +53,10 @@ namespace Vad3x.Extensions.EntityFrameworkCore
                 {
                     var applied = historyRepository.GetAppliedMigrations().Select(r => r.MigrationId);
                     pending = all.Except(applied);
+                    if (!pending.Any())
+                    {
+                        pending = new[] { "0" };
+                    }
                 }
                 else
                 {
@@ -79,6 +83,10 @@ namespace Vad3x.Extensions.EntityFrameworkCore
                 if (historyRepository.Exists())
                 {
                     applied = all.Intersect(historyRepository.GetAppliedMigrations().Select(r => r.MigrationId));
+                    if (!applied.Any())
+                    {
+                        applied = new[] { "0" };
+                    }
                 }
                 else
                 {
