@@ -70,12 +70,15 @@ namespace Vad3x.Extensions.EntityFrameworkCore
                 var services = scope.ServiceProvider;
 
                 var dbContext = services.GetService(dbContextType) as DbContext;
+                var migrationsAssembly = dbContext.GetService<IMigrationsAssembly>();
                 var historyRepository = dbContext.GetService<IHistoryRepository>();
+
+                var all = migrationsAssembly.Migrations.Keys;
 
                 IEnumerable<string> applied;
                 if (historyRepository.Exists())
                 {
-                    applied = historyRepository.GetAppliedMigrations().Select(r => r.MigrationId);
+                    applied = all.Intersect(historyRepository.GetAppliedMigrations().Select(r => r.MigrationId));
                 }
                 else
                 {
