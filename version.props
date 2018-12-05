@@ -1,5 +1,5 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ReleaseVersion>1.2.2</ReleaseVersion>
+    <ReleaseVersion>2.2.0</ReleaseVersion>
   </PropertyGroup>
 </Project>
