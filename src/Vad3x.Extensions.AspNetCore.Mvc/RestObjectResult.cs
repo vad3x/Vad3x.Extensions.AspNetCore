@@ -14,6 +14,9 @@
             Type = type;
             Title = title;
             Instance = instance;
+
+            StatusCode = statusCode;
+            DeclaredType = typeof(ProblemDetails);
         }
 
         public string Type { get; }
