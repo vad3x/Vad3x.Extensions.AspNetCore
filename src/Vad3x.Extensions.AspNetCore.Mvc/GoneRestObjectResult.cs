@@ -4,13 +4,15 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 namespace Microsoft.AspNetCore.Mvc
 {
     [DefaultStatusCode(DefaultStatusCode)]
-    public class GoneRestObjectResult : RestObjectResult
+    public class GoneRestObjectResult : ProblemDetailRestObjectResult
     {
         private const int DefaultStatusCode = StatusCodes.Status410Gone;
 
-        public GoneRestObjectResult(string type, string title, string instance)
-            : base(DefaultStatusCode, type, title, instance)
+        public GoneRestObjectResult(ProblemDetails problemDetails)
+            : base(problemDetails)
         {
+            StatusCode = DefaultStatusCode;
+            problemDetails.Status = DefaultStatusCode;
         }
     }
 }
