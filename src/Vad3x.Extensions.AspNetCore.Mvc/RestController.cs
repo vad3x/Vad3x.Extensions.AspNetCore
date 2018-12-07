@@ -5,33 +5,43 @@ namespace Microsoft.AspNetCore.Mvc
     public abstract class RestController : Controller
     {
         [NonAction]
-        public ConflictRestObjectResult Conflict(string type, string title = null)
+        public ConflictRestObjectResult Conflict(ProblemDetails problemDetails)
         {
-            return new ConflictRestObjectResult(type, title, HttpContext.Request.Path);
+            problemDetails.Instance = HttpContext.Request.Path;
+
+            return new ConflictRestObjectResult(problemDetails);
         }
 
         [NonAction]
-        public GoneRestObjectResult Gone(string type, string title = null)
+        public GoneRestObjectResult Gone(ProblemDetails problemDetails)
         {
-            return new GoneRestObjectResult(type, title, HttpContext.Request.Path);
+            problemDetails.Instance = HttpContext.Request.Path;
+
+            return new GoneRestObjectResult(problemDetails);
         }
 
         [NonAction]
-        public NotFoundRestObjectResult NotFound(string type, string title = null)
+        public NotFoundRestObjectResult NotFound(ProblemDetails problemDetails)
         {
-            return new NotFoundRestObjectResult(type, title, HttpContext.Request.Path);
+            problemDetails.Instance = HttpContext.Request.Path;
+
+            return new NotFoundRestObjectResult(problemDetails);
         }
 
         [NonAction]
-        public UnauthorizedRestObjectResult Unauthorized(string type, string title = null)
+        public UnauthorizedRestObjectResult Unauthorized(ProblemDetails problemDetails)
         {
-            return new UnauthorizedRestObjectResult(type, title, HttpContext.Request.Path);
+            problemDetails.Instance = HttpContext.Request.Path;
+
+            return new UnauthorizedRestObjectResult(problemDetails);
         }
 
         [NonAction]
-        public ForbiddenRestObjectResult Forbid(string type, string title = null)
+        public ForbiddenRestObjectResult Forbid(ProblemDetails problemDetails)
         {
-            return new ForbiddenRestObjectResult(type, title, HttpContext.Request.Path);
+            problemDetails.Instance = HttpContext.Request.Path;
+
+            return new ForbiddenRestObjectResult(problemDetails);
         }
     }
 }

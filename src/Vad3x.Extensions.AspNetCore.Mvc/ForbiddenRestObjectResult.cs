@@ -4,13 +4,15 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 namespace Microsoft.AspNetCore.Mvc
 {
     [DefaultStatusCode(DefaultStatusCode)]
-    public class ForbiddenRestObjectResult : RestObjectResult
+    public class ForbiddenRestObjectResult : ProblemDetailRestObjectResult
     {
         private const int DefaultStatusCode = StatusCodes.Status403Forbidden;
 
-        public ForbiddenRestObjectResult(string type, string title, string instance)
-            : base(DefaultStatusCode, type, title, instance)
+        public ForbiddenRestObjectResult(ProblemDetails problemDetails)
+            : base(problemDetails)
         {
+            StatusCode = DefaultStatusCode;
+            problemDetails.Status = DefaultStatusCode;
         }
     }
 }
